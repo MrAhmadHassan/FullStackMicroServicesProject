@@ -1,0 +1,11 @@
+spring:
+  application:
+    name:ACTIVITY-SERVICE
+
+  data:
+    mongodb:
+      uri:mongodb://localhost:27017/fitnessactivity
+      database:fitnessactivity
+
+
+
