@@ -12,5 +12,5 @@ import java.util.List;
 public interface ActivityRepository extends MongoRepository<Activity,String> {
 
 
-    List<ActivityResponse> findByUserId(String userId);
+    List<Activity> findByUserId(String userId);
 }

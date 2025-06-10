@@ -32,4 +32,10 @@ public class ActivityController {
 
         return ResponseEntity.ok(activityService.getUserActivities(userId));
     }
+
+    @GetMapping("/{activityId}")
+    public ResponseEntity<ActivityResponse> getActivity(@PathVariable String activityId){
+
+        return ResponseEntity.ok(activityService.getActivity(activityId));
+    }
 }

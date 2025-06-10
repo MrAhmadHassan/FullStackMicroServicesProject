@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ActivityService {
@@ -15,7 +16,16 @@ public class ActivityService {
     @Autowired
     ActivityRepository activityRepository;
 
+    @Autowired
+    UserValidationService userValidationService;
+
     public ActivityResponse trackActivity(ActivityRequest activityRequest) {
+
+        boolean isUserExists = userValidationService.validateUser(activityRequest.getUserId());
+        if(!isUserExists){
+            throw new RuntimeException("User with this Id not exists "+activityRequest.getUserId());
+        }
+
         Activity activity = new Activity();
         activity.setUserId(activityRequest.getUserId());
         activity.setActivityType(activityRequest.getActivityType());
@@ -42,6 +52,17 @@ public class ActivityService {
     }
 
     public List<ActivityResponse> getUserActivities(String userId) {
-        return activityRepository.findByUserId(userId);
+        List<Activity> activities = activityRepository.findByUserId(userId);
+
+        return activities.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public ActivityResponse getActivity(String activityId) {
+        Activity activity = activityRepository.findById(activityId)
+                .orElseThrow(()->new RuntimeException("Activity not exists"));
+
+        return toResponse(activity);
     }
 }
