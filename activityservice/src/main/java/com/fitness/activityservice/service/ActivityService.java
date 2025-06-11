@@ -4,6 +4,7 @@ import com.fitness.activityservice.dto.ActivityRequest;
 import com.fitness.activityservice.dto.ActivityResponse;
 import com.fitness.activityservice.model.Activity;
 import com.fitness.activityservice.repository.ActivityRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ActivityService {
 
     @Autowired
@@ -18,6 +20,8 @@ public class ActivityService {
 
     @Autowired
     UserValidationService userValidationService;
+    @Autowired
+    RabbitMQProducer rabbitMQProducer;
 
     public ActivityResponse trackActivity(ActivityRequest activityRequest) {
 
@@ -34,6 +38,13 @@ public class ActivityService {
         activity.setAdditionalMatrices(activityRequest.getAdditionalMatrices());
         activity.setCaloriesBurned(activityRequest.getCaloriesBurned());
         Activity savedActivity = activityRepository.save(activity);
+
+        try{
+            rabbitMQProducer.sendMessage(savedActivity);
+        }catch (Exception e){
+            log.error("Failed to publish activity to rabbitMQ: ",e.getMessage());
+        }
+
         return toResponse(savedActivity);
     }
 
