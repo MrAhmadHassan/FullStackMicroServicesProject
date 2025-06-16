@@ -8,6 +8,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Document(collection = "recommendation")
 @Data
 @Builder
@@ -19,12 +22,12 @@ public class Recommendation {
     private String userId;
     private String activityId;
     private String activityType;
-    private String improvements;
-    private String safety;
-    private String suggestions;
+    private List<String>  improvements;
+    private List<String> safety;
+    private List<String> suggestions;
 
     @CreatedDate
-    private String createdAt;
+    private LocalDateTime createdAt;
     @LastModifiedDate
-    private String lastUpdatedAt;
+    private LocalDateTime lastUpdatedAt;
 }

@@ -12,11 +12,13 @@ import java.util.Map;
 @Builder
 public class Activity {
     private String id;
+    private String type;
     private String userId;
     private Integer duration;
     private Integer caloriesBurned;
     private LocalDateTime startAt;
-    private Map<String,Object> additionalMatrices;
+    private Map<String,Object> additionalMetrices;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
 }
