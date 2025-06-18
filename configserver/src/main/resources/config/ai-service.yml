@@ -1,0 +1,31 @@
+
+
+
+# application-dev.yml
+server:
+  port: 8083
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/recommendations
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+
+gemini:
+  api:
+    key:${GEMINI_API_KEY}
+    url:${GEMINI_API_URL}
